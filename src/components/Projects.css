@@ -1,0 +1,53 @@
+/* Projects */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.project-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue-dark);
+}
+
+.project-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  flex: 1;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-tag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--blue-light);
+  color: var(--blue-dark);
+  font-weight: 500;
+}
+
+.github-btn {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.github-btn:hover {
+  text-decoration: underline;
+}

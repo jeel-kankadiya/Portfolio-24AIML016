@@ -1,0 +1,39 @@
+/* NotFound.css */
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nf-content {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  padding: 56px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.nf-code {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nf-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.nf-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 340px;
+}

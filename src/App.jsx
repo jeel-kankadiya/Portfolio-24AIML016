@@ -1,32 +1,38 @@
-import './App.css'
-import Header from './componants/Header'
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-const studentData = {
-  name: '24AIML016',
-  title: 'AI & ML Student',
-  navLinks: [
-    { label: 'Home', href: '#home' },
-    { label: 'About', href: '#about' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-  ],
-}
+import Navbar   from './components/Navbar';
+import Footer   from './components/Footer';
+
+import Home     from './pages/Home';
+import Projects from './pages/Projects';
+import Contact  from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 function App() {
-  return (
-    <>
-      <Header
-        name={studentData.name}
-        title={studentData.title}
-        navLinks={studentData.navLinks}
-      />
+  const [dark, setDark] = useState(false);
 
-      <main id="home">
-        <p>Portfolio content goes here…</p>
-      </main>
-    </>
-  )
+  const toggleTheme = () => setDark((d) => !d);
+
+  return (
+    <div data-theme={dark ? 'dark' : 'light'}>
+      {/* Decorative background blobs */}
+      <div className="blob-bg" aria-hidden="true">
+        <span /><span />
+      </div>
+
+      <Navbar dark={dark} toggleTheme={toggleTheme} />
+
+      <Routes>
+        <Route path="/"         element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact"  element={<Contact />} />
+        <Route path="*"         element={<NotFound />} />
+      </Routes>
+
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
