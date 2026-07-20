@@ -1,0 +1,10 @@
+/* App-level layout styles */
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 18px;
+}
