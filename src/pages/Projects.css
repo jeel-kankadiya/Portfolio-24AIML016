@@ -1,10 +1,11 @@
-/* Projects.css */
+/* ── Projects Grid ── */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
 
+/* ── Project / Repo Card ── */
 .project-card {
   padding: 28px;
   display: flex;
@@ -12,16 +13,34 @@
   gap: 14px;
   transition: transform 0.25s, box-shadow 0.25s;
 }
-
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 32px var(--accent-glow);
+}
+
+.repo-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .project-title {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--accent);
+}
+
+.repo-stats {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.repo-stat {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .project-desc {
@@ -31,12 +50,12 @@
   flex: 1;
 }
 
+/* ── Tech / Topic tags ── */
 .project-tech {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-
 .tech-tag {
   font-size: 0.75rem;
   font-weight: 600;
@@ -47,8 +66,119 @@
   border: 1px solid var(--border);
 }
 
+/* ── Language badge ── */
+.repo-lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── CTA button ── */
 .project-btn {
   align-self: flex-start;
   font-size: 0.85rem;
   padding: 8px 18px;
+}
+
+/* ── Search bar ── */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 38px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input::placeholder { color: var(--text-muted); }
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-clear {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.search-clear:hover { color: var(--accent); }
+
+/* ── Spinner ── */
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+.spinner {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error message ── */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 22px;
+  border-radius: var(--radius);
+  border-left: 4px solid #f87171;
+  color: var(--text);
+  margin-bottom: 28px;
+  font-size: 0.9rem;
+}
+.error-icon { font-size: 1.2rem; }
+
+/* ── Empty state ── */
+.no-results {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .search-wrapper { max-width: 100%; }
 }
