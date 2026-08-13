@@ -13,7 +13,7 @@ const FALLBACK = [
     name: 'Student Portfolio',
     description:
       'A responsive multi-page React portfolio with dark/light mode, React Router navigation, and reusable component architecture.',
-    html_url: 'https://github.com/',
+    html_url: 'https://github.com/jeel-kankadiya',
     stargazers_count: 0,
     forks_count: 0,
     language: 'JavaScript',
@@ -24,7 +24,7 @@ const FALLBACK = [
     name: 'Todo App',
     description:
       'A task-management web app built with React Hooks. Supports add, complete, delete, and filter operations with localStorage persistence.',
-    html_url: 'https://github.com/',
+    html_url: 'https://github.com/jeel-kankadiya',
     stargazers_count: 0,
     forks_count: 0,
     language: 'JavaScript',
@@ -35,7 +35,7 @@ const FALLBACK = [
     name: 'Weather Dashboard',
     description:
       'Fetches live weather data from OpenWeatherMap API and displays temperature, humidity, and a 5-day forecast.',
-    html_url: 'https://github.com/',
+    html_url: 'https://github.com/jeel-kankadiya',
     stargazers_count: 0,
     forks_count: 0,
     language: 'JavaScript',
@@ -44,7 +44,7 @@ const FALLBACK = [
 ];
 
 /* ── Replace with your GitHub username to load live repos ── */
-const GITHUB_USERNAME = '24AIML016';
+const GITHUB_USERNAME = 'jeel-kankadiya';
 
 const Projects = () => {
   const [repos,   setRepos]   = useState(FALLBACK);
@@ -70,7 +70,12 @@ const Projects = () => {
         const res = await Promise.race([
           fetch(
             `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=30`,
-            { signal: controller.signal }
+            {
+              signal: controller.signal,
+              headers: {
+                'Accept': 'application/vnd.github.mercy-preview+json',
+              },
+            }
           ),
           timeout,
         ]);
