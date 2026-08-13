@@ -10,8 +10,8 @@ const RepoList = ({ repos }) => {
 
   return (
     <div className="projects-grid">
-      {repos.map((repo) => (
-        <RepoCard key={repo.id} repo={repo} />
+      {repos.map((repo, i) => (
+        <RepoCard key={repo.id} repo={repo} index={i} />
       ))}
     </div>
   );

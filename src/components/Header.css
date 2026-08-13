@@ -1,60 +1,159 @@
 /* Header.css */
 .header {
   text-align: center;
-  padding: 56px 24px 40px;
-  background: linear-gradient(160deg, var(--accent) 0%, var(--accent2) 100%);
+  padding: 80px 24px 48px;
+  background: var(--gradient);
   color: #fff;
   margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.header-avatar {
-  width: 88px;
-  height: 88px;
+/* Subtle pattern overlay */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Avatar wrapper */
+.header-avatar-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 22px;
+}
+
+.header-avatar-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 2;
+  animation: scaleIn 0.5s ease both;
+}
+
+.header-avatar-letter {
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background: rgba(255,255,255,0.2);
-  border: 3px solid rgba(255,255,255,0.5);
-  font-size: 2.4rem;
-  font-weight: 700;
+  border: 4px solid rgba(255,255,255,0.5);
+  font-size: 2.8rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 18px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Pulsing ring glow */
+.avatar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  animation: avatarPulse 2.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes avatarPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.08); opacity: 0.2; }
 }
 
 .header-name {
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-size: 2.6rem;
+  font-weight: 800;
   color: #fff;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+  animation: fadeIn 0.6s ease 0.1s both;
 }
 
 .header-role {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.82);
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.85);
   margin-bottom: 24px;
+  animation: fadeIn 0.6s ease 0.2s both;
+}
+
+/* Typing cursor */
+.typing-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  font-weight: 300;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* Social icons */
+.header-socials {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 28px;
+  animation: fadeIn 0.6s ease 0.3s both;
+}
+
+.header-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.header-socials a:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-3px);
 }
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
+  animation: fadeIn 0.6s ease 0.4s both;
 }
 
 .btn-outline {
   display: inline-block;
-  padding: 9px 22px;
-  border-radius: 8px;
+  padding: 11px 26px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   cursor: pointer;
   text-decoration: none;
-  border: 2px solid rgba(255,255,255,0.7);
+  border: 2px solid rgba(255,255,255,0.6);
   color: #fff;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
-.btn-outline:hover { background: rgba(255,255,255,0.15); }
+.btn-outline:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
 
 @media (max-width: 480px) {
-  .header-name { font-size: 1.7rem; }
+  .header { padding: 72px 20px 40px; }
+  .header-name { font-size: 2rem; }
+  .header-avatar-wrapper { width: 90px; height: 90px; }
+  .header-avatar-img,
+  .header-avatar-letter { width: 90px; height: 90px; }
 }

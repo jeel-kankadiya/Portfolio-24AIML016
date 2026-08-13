@@ -1,29 +1,63 @@
 /* Footer.css */
 .footer {
   background: var(--bg-glass);
-  border-top: 1px solid var(--border);
-  padding: 24px;
+  backdrop-filter: blur(12px);
   text-align: center;
   font-size: 0.87rem;
   color: var(--text-muted);
-  backdrop-filter: blur(12px);
+  position: relative;
+}
+
+/* Gradient separator */
+.footer-separator {
+  height: 2px;
+  background: var(--gradient);
+  opacity: 0.5;
+}
+
+.footer-content {
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
+}
+
+.footer-content strong {
+  color: var(--accent);
 }
 
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 16px;
 }
 
 .footer-links a {
-  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.85rem;
-  transition: opacity 0.2s;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
 }
 
-.footer-links a:hover { opacity: 0.7; }
+.footer-links a:hover {
+  color: var(--accent);
+  background: var(--accent-glow);
+  transform: translateY(-3px);
+}
+
+.footer-flair {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .footer-content { padding: 20px 16px; }
+}

@@ -1,23 +1,62 @@
 /* Home.css */
 .home-wrapper { display: flex; flex-direction: column; }
 
+/* ── GitHub Stats ── */
+.github-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: default;
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Bio ── */
 .home-bio {
-  padding: 32px;
-  margin-bottom: 40px;
+  padding: 36px;
+  margin-bottom: 48px;
   text-align: center;
 }
 
 .bio-text {
   color: var(--text-muted);
-  font-size: 0.97rem;
-  max-width: 620px;
+  font-size: 1rem;
+  max-width: 640px;
   margin: 0 auto;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 .bio-text strong { color: var(--accent); }
 
-.skills-section { text-align: center; }
+/* ── Skills ── */
+.skills-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
 .skills-grid {
   display: flex;
@@ -27,16 +66,28 @@
 }
 
 .skill-chip {
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: 30px;
   font-size: 0.88rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--accent);
   border: 1px solid var(--border);
-  transition: transform 0.2s, background 0.2s;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
 }
 
 .skill-chip:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   background: var(--accent-glow);
+  box-shadow: 0 8px 20px var(--accent-glow);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .github-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stat-number { font-size: 1.8rem; }
+  .home-bio { padding: 24px; }
 }

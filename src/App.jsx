@@ -18,7 +18,7 @@ function App() {
     <div data-theme={dark ? 'dark' : 'light'}>
       {/* Decorative background blobs */}
       <div className="blob-bg" aria-hidden="true">
-        <span /><span />
+        <span /><span /><span />
       </div>
 
       <Navbar dark={dark} toggleTheme={toggleTheme} />

@@ -6,28 +6,34 @@
 }
 
 .nf-content {
-  max-width: 480px;
+  max-width: 500px;
   width: 100%;
   text-align: center;
-  padding: 56px 40px;
+  padding: 60px 44px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   align-items: center;
 }
 
 .nf-code {
-  font-size: 6rem;
+  font-size: 7rem;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: nfFloat 3s ease-in-out infinite;
+}
+
+@keyframes nfFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-16px); }
 }
 
 .nf-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--text);
 }
@@ -36,4 +42,5 @@
   font-size: 0.95rem;
   color: var(--text-muted);
   max-width: 340px;
+  line-height: 1.7;
 }
