@@ -109,6 +109,7 @@ app.put('/tasks/:id', async (req, res, next) => {
 
         const task = await Task.findByIdAndUpdate(
             req.params.id,
+
             req.body,
             {
                 new: true,
