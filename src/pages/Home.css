@@ -1,0 +1,42 @@
+/* Home.css */
+.home-wrapper { display: flex; flex-direction: column; }
+
+.home-bio {
+  padding: 32px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.bio-text {
+  color: var(--text-muted);
+  font-size: 0.97rem;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.bio-text strong { color: var(--accent); }
+
+.skills-section { text-align: center; }
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.skill-chip {
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.skill-chip:hover {
+  transform: translateY(-2px);
+  background: var(--accent-glow);
+}

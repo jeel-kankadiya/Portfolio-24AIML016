@@ -1,0 +1,3 @@
+/* Minimal reset — all design lives in App.css */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }

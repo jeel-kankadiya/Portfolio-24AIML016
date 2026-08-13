@@ -1,0 +1,23 @@
+/* Skills */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.skill-badge {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--blue-dark);
+  background: var(--blue-light);
+  border: 1px solid rgba(26, 115, 232, 0.25);
+  border-radius: 6px;
+  box-shadow: none;
+  transition: background 0.2s;
+}
+
+.skill-badge:hover {
+  background: #d2e3fc;
+}

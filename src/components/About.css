@@ -1,0 +1,20 @@
+/* About */
+.about-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-block h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+
+.about-block p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
