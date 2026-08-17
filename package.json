@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "vite",
-    "dev:backend": "cd \"Backhand-24AIML016/jeel -api/mongoDB_24AIML016\" && node server_new.js",
+    "dev:backend": "cd \"Backhand-24AIML016/jeel -api/mongoDB_24AIML016\" && npm start",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
