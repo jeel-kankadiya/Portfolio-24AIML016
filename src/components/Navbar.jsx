@@ -9,6 +9,7 @@ const Navbar = ({ dark, toggleTheme }) => {
   const navItems = [
     { label: 'Home',     to: '/'         },
     { label: 'Projects', to: '/projects' },
+    { label: 'Tasks',    to: '/tasks'    },
     { label: 'Contact',  to: '/contact'  },
   ];
 
