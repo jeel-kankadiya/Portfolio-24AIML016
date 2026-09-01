@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const Task = require('./models/Task');
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks');
 
 const app = express();
 
@@ -30,184 +31,14 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 // ==========================================
-// GET ALL TASKS
+// ROUTES
 // ==========================================
 
-app.get('/tasks', async (req, res, next) => {
-
-    try {
-
-        const tasks = await Task.find();
-
-        res.status(200).json(tasks);
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
-
-
-// ==========================================
-// GET TASK BY ID
-// ==========================================
-
-app.get('/tasks/:id', async (req, res, next) => {
-
-    try {
-
-        const task = await Task.findById(req.params.id);
-
-        if (!task) {
-
-            return res.status(404).json({
-                error: 'Not Found',
-                message: 'Task not found'
-            });
-
-        }
-
-        res.status(200).json(task);
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
-
-
-// ==========================================
-// CREATE TASK
-// ==========================================
-
-app.post('/tasks', async (req, res, next) => {
-
-    try {
-
-        const task = await Task.create(req.body);
-
-        res.status(201).json(task);
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
-
-
-// ==========================================
-// UPDATE TASK - PUT
-// ==========================================
-
-app.put('/tasks/:id', async (req, res, next) => {
-
-    try {
-
-        const task = await Task.findByIdAndUpdate(
-            req.params.id,
-
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
-
-        if (!task) {
-
-            return res.status(404).json({
-                error: 'Not Found',
-                message: 'Task not found'
-            });
-
-        }
-
-        res.status(200).json(task);
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
-
-
-// ==========================================
-// PARTIAL UPDATE TASK - PATCH
-// ==========================================
-
-app.patch('/tasks/:id', async (req, res, next) => {
-
-    try {
-
-        const task = await Task.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
-
-        if (!task) {
-
-            return res.status(404).json({
-                error: 'Not Found',
-                message: 'Task not found'
-            });
-
-        }
-
-        res.status(200).json(task);
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
-
-
-// ==========================================
-// DELETE TASK
-// ==========================================
-
-app.delete('/tasks/:id', async (req, res, next) => {
-
-    try {
-
-        const task = await Task.findByIdAndDelete(
-            req.params.id
-        );
-
-        if (!task) {
-
-            return res.status(404).json({
-                error: 'Not Found',
-                message: 'Task not found'
-            });
-
-        }
-
-        res.status(200).json({
-            message: 'Task deleted successfully'
-        });
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-});
+// Auth routes: /register, /login, /me
+app.use('/', authRoutes);
+
+// Task routes: /tasks (all protected by JWT)
+app.use('/tasks', taskRoutes);
 
 
 // ==========================================
@@ -242,7 +73,17 @@ app.use((err, req, res, next) => {
 
         return res.status(400).json({
             error: 'Invalid ID',
-            message: 'Invalid task ID'
+            message: 'Invalid ID format'
+        });
+
+    }
+
+    // Duplicate key error (e.g., duplicate email)
+    if (err.code === 11000) {
+
+        return res.status(400).json({
+            error: 'Duplicate Error',
+            message: 'A record with this value already exists'
         });
 
     }
