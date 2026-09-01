@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../api';
 import ThemeToggle from './ThemeToggle';
 import './Navbar.css';
 
-const Navbar = ({ dark, toggleTheme }) => {
+const Navbar = ({ dark, toggleTheme, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const loggedIn = isAuthenticated();
 
   const navItems = [
     { label: 'Home', to: '/' },
@@ -12,6 +15,12 @@ const Navbar = ({ dark, toggleTheme }) => {
     { label: 'Tasks', to: '/tasks' },
     { label: 'Contact', to: '/contact' },
   ];
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    if (onLogout) onLogout();
+    navigate('/login');
+  };
 
   return (
     <nav className="navbar glass">
@@ -44,9 +53,61 @@ const Navbar = ({ dark, toggleTheme }) => {
             </NavLink>
           </li>
         ))}
+
+        {/* Auth links in mobile menu */}
+        {!loggedIn && (
+          <>
+            <li className="nav-auth-mobile">
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  'nav-link' + (isActive ? ' active' : '')
+                }
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </NavLink>
+            </li>
+            <li className="nav-auth-mobile">
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  'nav-link' + (isActive ? ' active' : '')
+                }
+                onClick={() => setMenuOpen(false)}
+              >
+                Register
+              </NavLink>
+            </li>
+          </>
+        )}
+        {loggedIn && (
+          <li className="nav-auth-mobile">
+            <button className="nav-link nav-logout-mobile" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
 
       <div className="nav-right">
+        {/* Auth buttons for desktop */}
+        {!loggedIn && (
+          <div className="nav-auth-desktop">
+            <NavLink to="/login" className="nav-auth-link" onClick={() => setMenuOpen(false)}>
+              Login
+            </NavLink>
+            <NavLink to="/register" className="nav-auth-btn" onClick={() => setMenuOpen(false)}>
+              Register
+            </NavLink>
+          </div>
+        )}
+        {loggedIn && (
+          <button className="nav-auth-btn nav-logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+
         <a
           href="https://github.com/jeel-kankadiya"
           target="_blank"
