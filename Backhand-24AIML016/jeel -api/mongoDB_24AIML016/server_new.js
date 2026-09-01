@@ -34,11 +34,11 @@ mongoose.connect(process.env.MONGO_URI)
 // ROUTES
 // ==========================================
 
-// Auth routes: /register, /login, /me
-app.use('/', authRoutes);
+// Auth routes: /api/auth/register, /api/auth/login, /api/auth/me
+app.use('/api/auth', authRoutes);
 
-// Task routes: /tasks (all protected by JWT)
-app.use('/tasks', taskRoutes);
+// Task routes: /api/tasks (all protected by JWT)
+app.use('/api/tasks', taskRoutes);
 
 
 // ==========================================
