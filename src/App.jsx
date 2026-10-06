@@ -1,17 +1,51 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { isAuthenticated, logout } from './api';
 
 import Navbar   from './components/Navbar';
 import Footer   from './components/Footer';
 
-import Home     from './pages/Home';
-import Projects from './pages/Projects';
-import Tasks    from './pages/Tasks';
-import Contact  from './pages/Contact';
-import NotFound from './pages/NotFound';
-import Login    from './pages/Login';
-import Register from './pages/Register';
+// ==========================================
+// PRACTICAL 8 — Lazy Loading with React.lazy()
+// ==========================================
+// Route-based code splitting: each page component
+// is loaded as a separate chunk only when needed.
+// This reduces the initial bundle size significantly.
+
+const Home     = lazy(() => import('./pages/Home'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Tasks    = lazy(() => import('./pages/Tasks'));
+const Contact  = lazy(() => import('./pages/Contact'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Login    = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+
+/* ==========================================
+   Loading Fallback Component
+   ==========================================
+   Shown while a lazy-loaded chunk is being
+   downloaded. Uses a premium animated design
+   so the user sees a polished UI even on
+   slow connections (test with Slow 3G throttle).
+   ========================================== */
+
+const LoadingFallback = () => (
+  <div className="lazy-loading-fallback" role="status" aria-label="Loading page content">
+    <div className="lazy-loading-inner">
+      <div className="lazy-spinner">
+        <div className="lazy-spinner-ring"></div>
+        <div className="lazy-spinner-ring"></div>
+        <div className="lazy-spinner-ring"></div>
+      </div>
+      <p className="lazy-loading-text">
+        Loading
+        <span className="lazy-dot lazy-dot-1">.</span>
+        <span className="lazy-dot lazy-dot-2">.</span>
+        <span className="lazy-dot lazy-dot-3">.</span>
+      </p>
+    </div>
+  </div>
+);
 
 /* Protected Route — redirects to /login if not authenticated */
 const ProtectedRoute = ({ children }) => {
@@ -43,19 +77,27 @@ function App() {
 
       <Navbar dark={dark} toggleTheme={toggleTheme} onLogout={handleLogout} />
 
-      <Routes>
-        <Route path="/"         element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/tasks"    element={
-          <ProtectedRoute>
-            <Tasks />
-          </ProtectedRoute>
-        } />
-        <Route path="/contact"  element={<Contact />} />
-        <Route path="/login"    element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*"         element={<NotFound />} />
-      </Routes>
+      {/* ==========================================
+          PRACTICAL 8 — Suspense wrapper
+          ==========================================
+          Wraps the Routes block so that any lazy-loaded
+          route component shows the fallback UI while
+          its chunk is downloading. */}
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/"         element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/tasks"    element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          } />
+          <Route path="/contact"  element={<Contact />} />
+          <Route path="/login"    element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*"         element={<NotFound />} />
+        </Routes>
+      </Suspense>
 
       <Footer />
     </div>

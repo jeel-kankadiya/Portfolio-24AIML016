@@ -44,7 +44,7 @@ const handleUnauthorized = (response) => {
  * POST /register — Register a new user
  */
 export const register = async (email, password) => {
-  const response = await fetch(`${BASE_URL}/register`, {
+  const response = await fetch(`${BASE_URL}/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -62,7 +62,7 @@ export const register = async (email, password) => {
  * POST /login — Login and receive JWT token
  */
 export const login = async (email, password) => {
-  const response = await fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -94,7 +94,7 @@ export const logout = () => {
  * GET /me — Get current logged-in user details
  */
 export const getMe = async () => {
-  const response = await fetch(`${BASE_URL}/me`, {
+  const response = await fetch(`${BASE_URL}/api/auth/me`, {
     headers: authHeaders(),
   });
 
@@ -123,7 +123,7 @@ export const isAuthenticated = () => {
  * GET /tasks — Fetch all tasks from MongoDB
  */
 export const getTasks = async () => {
-  const response = await fetch(`${BASE_URL}/tasks`, {
+  const response = await fetch(`${BASE_URL}/api/tasks`, {
     headers: authHeaders(),
   });
 
@@ -140,7 +140,7 @@ export const getTasks = async () => {
  * POST /tasks — Create a new task
  */
 export const createTask = async (taskData) => {
-  const response = await fetch(`${BASE_URL}/tasks`, {
+  const response = await fetch(`${BASE_URL}/api/tasks`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify(taskData),
@@ -160,7 +160,7 @@ export const createTask = async (taskData) => {
  * PUT /tasks/:id — Update an existing task
  */
 export const updateTask = async (id, taskData) => {
-  const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+  const response = await fetch(`${BASE_URL}/api/tasks/${id}`, {
     method: "PUT",
     headers: authHeaders(),
     body: JSON.stringify(taskData),
@@ -180,7 +180,7 @@ export const updateTask = async (id, taskData) => {
  * DELETE /tasks/:id — Delete a task
  */
 export const deleteTask = async (id) => {
-  const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+  const response = await fetch(`${BASE_URL}/api/tasks/${id}`, {
     method: "DELETE",
     headers: authHeaders(),
   });
