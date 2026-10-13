@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const cache      = require('./cache');          // Practical 8 — shared cache
 
 const app = express();
 
@@ -39,6 +40,17 @@ app.use('/api/auth', authRoutes);
 
 // Task routes: /api/tasks (all protected by JWT)
 app.use('/api/tasks', taskRoutes);
+
+
+// ==========================================
+// DEBUG — GET /api/debug/cache
+// ==========================================
+// Returns live cache hit/miss counters and the list of active keys.
+// Supplementary task: cache-hit/miss counter endpoint.
+
+app.get('/api/debug/cache', (req, res) => {
+    res.status(200).json(cache.stats());
+});
 
 
 // ==========================================

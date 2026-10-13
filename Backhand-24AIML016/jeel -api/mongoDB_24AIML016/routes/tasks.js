@@ -1,7 +1,8 @@
 const express = require('express');
-const Task = require('../models/task');
-const auth = require('../middleware/auth');
+const Task     = require('../models/task');
+const auth     = require('../middleware/auth');
 const { validateTask } = require('../middleware/validate');
+const cache    = require('../cache');
 
 const router = express.Router();
 
@@ -14,6 +15,15 @@ router.use(auth);
 
 
 // ==========================================
+// CACHE KEY HELPERS
+// Per-user keys ensure one user's cache never leaks to another.
+// ==========================================
+
+const allTasksKey  = (userId) => `all_tasks:${userId}`;
+const oneTaskKey   = (userId, taskId) => `task:${userId}:${taskId}`;
+
+
+// ==========================================
 // GET ALL TASKS — GET /tasks
 // ==========================================
 
@@ -21,8 +31,20 @@ router.get('/', async (req, res, next) => {
 
     try {
 
-        // Only return tasks belonging to the logged-in user
+        const cacheKey = allTasksKey(req.user.id);
+
+        // ——— Cache CHECK ———
+        const cached = cache.get(cacheKey);
+        if (cached) {
+            // Return cached data immediately (CACHE HIT)
+            return res.status(200).json(cached);
+        }
+
+        // ——— Cache MISS: query MongoDB ———
         const tasks = await Task.find({ user: req.user.id });
+
+        // Store result in cache with default TTL (60 s)
+        cache.set(cacheKey, tasks);
 
         res.status(200).json(tasks);
 
@@ -43,19 +65,31 @@ router.get('/:id', async (req, res, next) => {
 
     try {
 
+        const cacheKey = oneTaskKey(req.user.id, req.params.id);
+
+        // ——— Cache CHECK ———
+        const cached = cache.get(cacheKey);
+        if (cached) {
+            return res.status(200).json(cached);
+        }
+
+        // ——— Cache MISS ———
         const task = await Task.findOne({
-            _id: req.params.id,
+            _id : req.params.id,
             user: req.user.id
         });
 
         if (!task) {
 
             return res.status(404).json({
-                error: 'Not Found',
+                error  : 'Not Found',
                 message: 'Task not found'
             });
 
         }
+
+        // Cache single-task result
+        cache.set(cacheKey, task);
 
         res.status(200).json(task);
 
@@ -81,6 +115,9 @@ router.post('/', validateTask, async (req, res, next) => {
             user: req.user.id
         });
 
+        // ——— INVALIDATE all-tasks cache for this user ———
+        cache.del(allTasksKey(req.user.id));
+
         res.status(201).json(task);
 
     } catch (err) {
@@ -104,7 +141,7 @@ router.put('/:id', validateTask, async (req, res, next) => {
             { _id: req.params.id, user: req.user.id },
             req.body,
             {
-                new: true,
+                new          : true,
                 runValidators: true
             }
         );
@@ -112,11 +149,17 @@ router.put('/:id', validateTask, async (req, res, next) => {
         if (!task) {
 
             return res.status(404).json({
-                error: 'Not Found',
+                error  : 'Not Found',
                 message: 'Task not found'
             });
 
         }
+
+        // ——— INVALIDATE both all-tasks and the specific task caches ———
+        cache.del(
+            allTasksKey(req.user.id),
+            oneTaskKey(req.user.id, req.params.id)
+        );
 
         res.status(200).json(task);
 
@@ -141,7 +184,7 @@ router.patch('/:id', async (req, res, next) => {
             { _id: req.params.id, user: req.user.id },
             req.body,
             {
-                new: true,
+                new          : true,
                 runValidators: true
             }
         );
@@ -149,11 +192,17 @@ router.patch('/:id', async (req, res, next) => {
         if (!task) {
 
             return res.status(404).json({
-                error: 'Not Found',
+                error  : 'Not Found',
                 message: 'Task not found'
             });
 
         }
+
+        // ——— INVALIDATE both caches ———
+        cache.del(
+            allTasksKey(req.user.id),
+            oneTaskKey(req.user.id, req.params.id)
+        );
 
         res.status(200).json(task);
 
@@ -175,18 +224,24 @@ router.delete('/:id', async (req, res, next) => {
     try {
 
         const task = await Task.findOneAndDelete({
-            _id: req.params.id,
+            _id : req.params.id,
             user: req.user.id
         });
 
         if (!task) {
 
             return res.status(404).json({
-                error: 'Not Found',
+                error  : 'Not Found',
                 message: 'Task not found'
             });
 
         }
+
+        // ——— INVALIDATE both caches ———
+        cache.del(
+            allTasksKey(req.user.id),
+            oneTaskKey(req.user.id, req.params.id)
+        );
 
         res.status(200).json({
             message: 'Task deleted successfully'
