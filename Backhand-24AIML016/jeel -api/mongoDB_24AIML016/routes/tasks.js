@@ -17,10 +17,11 @@ router.use(auth);
 // ==========================================
 // CACHE KEY HELPERS
 // Per-user keys ensure one user's cache never leaks to another.
+// Format matches terminal log output: tasks_<userId>
 // ==========================================
 
-const allTasksKey  = (userId) => `all_tasks:${userId}`;
-const oneTaskKey   = (userId, taskId) => `task:${userId}:${taskId}`;
+const allTasksKey  = (userId) => `tasks_${userId}`;
+const oneTaskKey   = (userId, taskId) => `task_${userId}_${taskId}`;
 
 
 // ==========================================
