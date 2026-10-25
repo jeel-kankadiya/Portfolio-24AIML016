@@ -27,12 +27,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016/package-lock.json'
 
       - name: Install dependencies
         working-directory: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016'
-        run: npm ci
+        run: npm install
 
       - name: Run Jest tests
         working-directory: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016'
@@ -53,12 +51,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'Fronthand-24AIML016/package-lock.json'
 
       - name: Install dependencies
         working-directory: 'Fronthand-24AIML016'
-        run: npm ci
+        run: npm install
 
       - name: Run Vitest tests
         working-directory: 'Fronthand-24AIML016'
