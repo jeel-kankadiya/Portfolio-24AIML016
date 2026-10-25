@@ -9,7 +9,6 @@ on:
 jobs:
   # ─────────────────────────────────────────────
   # Job 1: Frontend — Vitest component tests
-  # (No DB needed — always runs on GitHub)
   # ─────────────────────────────────────────────
   frontend-tests:
     name: Frontend (Vitest)
@@ -34,16 +33,22 @@ jobs:
 
   # ─────────────────────────────────────────────
   # Job 2: Backend — Jest integration tests
-  # (Only runs when MONGO_URI secret is set)
+  # Uses a real MongoDB service container
+  # so no Atlas account is needed
   # ─────────────────────────────────────────────
   backend-tests:
     name: Backend (Jest)
     runs-on: ubuntu-latest
-    if: ${{ secrets.MONGO_URI != '' }}
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
 
     env:
-      MONGO_URI: ${{ secrets.MONGO_URI }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      MONGO_URI: mongodb://localhost:27017/24AIML016_test
+      JWT_SECRET: ci_jwt_secret_24aiml016
       PORT: 5000
 
     steps:
