@@ -1,0 +1,36 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Jest Tests
+    runs-on: ubuntu-latest
+
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: 5000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016'
+        run: npm ci
+
+      - name: Run Jest tests
+        working-directory: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016'
+        run: npm test
