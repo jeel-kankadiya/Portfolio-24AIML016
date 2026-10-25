@@ -6,6 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const aiRoutes   = require('./routes/ai');
 const cache      = require('./cache');
 
 const app = express();
@@ -28,6 +29,9 @@ app.use('/api/auth', authRoutes);
 
 // Task routes: /api/tasks (all protected by JWT)
 app.use('/api/tasks', taskRoutes);
+
+// AI routes: /api/ai (protected by JWT, proxies Gemini — key never leaves server)
+app.use('/api/ai', aiRoutes);
 
 
 // ==========================================
