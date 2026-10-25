@@ -7,8 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: Run Jest Tests
+  # ─────────────────────────────────────────────
+  # Job 1: Backend — Jest integration tests
+  # ─────────────────────────────────────────────
+  backend-tests:
+    name: Backend (Jest)
     runs-on: ubuntu-latest
 
     env:
@@ -33,4 +36,30 @@ jobs:
 
       - name: Run Jest tests
         working-directory: 'Backhand-24AIML016/jeel -api/mongoDB_24AIML016'
+        run: npm test
+
+  # ─────────────────────────────────────────────
+  # Job 2: Frontend — Vitest component tests
+  # ─────────────────────────────────────────────
+  frontend-tests:
+    name: Frontend (Vitest)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Fronthand-24AIML016/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: 'Fronthand-24AIML016'
+        run: npm ci
+
+      - name: Run Vitest tests
+        working-directory: 'Fronthand-24AIML016'
         run: npm test
