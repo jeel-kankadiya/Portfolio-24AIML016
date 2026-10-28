@@ -1,5 +1,6 @@
 /* TaskForm.jsx — Modal dialog for creating/editing tasks */
 import { useState, useEffect } from 'react';
+import { generateDescription } from '../api';
 
 const INITIAL_FORM = {
   title: '',
@@ -11,6 +12,8 @@ const INITIAL_FORM = {
 const TaskForm = ({ isOpen, onClose, onSubmit, editingTask, isSubmitting }) => {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError]   = useState('');
 
   const isEditing = !!editingTask;
 
@@ -28,6 +31,7 @@ const TaskForm = ({ isOpen, onClose, onSubmit, editingTask, isSubmitting }) => {
         setForm(INITIAL_FORM);
       }
       setErrors({});
+      setAiError('');
     }
   }, [editingTask, isOpen]);
 
@@ -50,6 +54,24 @@ const TaskForm = ({ isOpen, onClose, onSubmit, editingTask, isSubmitting }) => {
 
   const handlePriority = (priority) => {
     setForm((prev) => ({ ...prev, priority }));
+  };
+
+  /* ── AI Description Generate ── */
+  const handleAIGenerate = async () => {
+    if (!form.title.trim()) {
+      setErrors((prev) => ({ ...prev, title: 'Please enter a task title first.' }));
+      return;
+    }
+    setAiLoading(true);
+    setAiError('');
+    try {
+      const { description } = await generateDescription(form.title.trim());
+      setForm((prev) => ({ ...prev, description }));
+    } catch (err) {
+      setAiError(err.message || 'AI generation failed. Please try again.');
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -108,16 +130,32 @@ const TaskForm = ({ isOpen, onClose, onSubmit, editingTask, isSubmitting }) => {
 
             {/* Description */}
             <div className="modal-field">
-              <label htmlFor="task-desc">Description (optional)</label>
+              <div className="desc-label-row">
+                <label htmlFor="task-desc">Description (optional)</label>
+                <button
+                  type="button"
+                  className={`btn-ai-generate${aiLoading ? ' ai-loading' : ''}`}
+                  onClick={handleAIGenerate}
+                  disabled={aiLoading || isSubmitting}
+                  title="Generate description using Gemini AI"
+                >
+                  {aiLoading ? (
+                    <><span className="ai-spinner" />Generating...</>
+                  ) : (
+                    <>✨ AI Generate</>
+                  )}
+                </button>
+              </div>
               <textarea
                 id="task-desc"
                 name="description"
                 rows={3}
-                placeholder="Enter task description..."
+                placeholder="Enter task description or click ✨ AI Generate..."
                 value={form.description}
                 onChange={handleChange}
-                disabled={isSubmitting}
+                disabled={isSubmitting || aiLoading}
               />
+              {aiError && <span className="ai-error-msg">⚠️ {aiError}</span>}
             </div>
 
             {/* Priority */}

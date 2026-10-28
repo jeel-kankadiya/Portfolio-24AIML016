@@ -177,6 +177,26 @@ export const updateTask = async (id, taskData) => {
 };
 
 /**
+ * POST /api/ai/generate-description — Generate AI description for a task title via Gemini
+ */
+export const generateDescription = async (title) => {
+  const response = await fetch(`${BASE_URL}/api/ai/generate-description`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({ title }),
+  });
+
+  handleUnauthorized(response);
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "AI description generation failed");
+  }
+
+  return response.json(); // { description: string }
+};
+
+/**
  * DELETE /tasks/:id — Delete a task
  */
 export const deleteTask = async (id) => {
